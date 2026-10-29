@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MRB – Ghép từ những khoảnh khắc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* one visual world: a dark gallery wall so the photos carry the colour; header + toolbar frame a full-bleed zoom viewer */
+  --wall:#0f1512; --panel:#17201b; --line:#2a3a31; --text:#eef3ef; --muted:#9fb3a6; --accent:#7cc142;
+  --font:"Be Vietnam Pro",system-ui,"Segoe UI",Roboto,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--wall);color:var(--text);font-family:var(--font);display:flex;flex-direction:column}
+header{display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--line);background:var(--panel)}
+h1{margin:0;font-size:clamp(18px,2.4vw,26px);font-weight:800;letter-spacing:-.01em;text-wrap:balance}
+h1 span{color:var(--accent)}
+.by{margin:0;color:var(--muted);font-size:14px}
+#viewer{flex:1;min-height:320px;background:var(--wall)}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--line);background:var(--panel)}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+button{font:600 14px var(--font);color:var(--text);background:transparent;border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer}
+button:hover{border-color:var(--accent);color:var(--accent)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.facts{color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+.facts b{color:var(--text);font-weight:600}
+</style>
+</head>
+<body>
+<header>
+  <h1>MRB – <span>Ghép từ những khoảnh khắc</span></h1>
+  <p class="by">Bài dự thi CHẠM – Sáng tác 25 · MRB Group</p>
+</header>
+<div id="viewer" role="img" aria-label="Tranh ghép logo MRB từ 4.900 ô ảnh hoạt động của Ban, có thể phóng to"></div>
+<div class="bar">
+  <div class="btns">
+    <button id="zin" type="button">Phóng to</button>
+    <button id="zout" type="button">Thu nhỏ</button>
+    <button id="home" type="button">Xem toàn cảnh</button>
+    <button id="full" type="button">Toàn màn hình</button>
+  </div>
+  <div class="facts"><b>1.999</b> ảnh gốc · <b>70 × 70</b> ô · 100% màu gốc · Cuộn chuột hoặc chụm hai ngón để phóng to, kéo để di chuyển</div>
+</div>
+<script src="openseadragon.min.js"></script>
+<script>
+const v = OpenSeadragon({
+  id: "viewer",
+  tileSources: "mrb.dzi",
+  showNavigationControl: false,
+  showNavigator: true,
+  navigatorPosition: "BOTTOM_RIGHT",
+  navigatorSizeRatio: 0.16,
+  maxZoomPixelRatio: 2,
+  visibilityRatio: 0.6,
+  animationTime: 0.8,
+  gestureSettingsMouse: { clickToZoom: false, dblClickToZoom: true },
+  crossOriginPolicy: false
+});
+document.getElementById("zin").onclick = () => { v.viewport.zoomBy(1.6); v.viewport.applyConstraints(); };
+document.getElementById("zout").onclick = () => { v.viewport.zoomBy(1/1.6); v.viewport.applyConstraints(); };
+document.getElementById("home").onclick = () => v.viewport.goHome();
+document.getElementById("full").onclick = () => { try { v.setFullScreen(!v.isFullPage()); } catch (e) {} };
+</script>
+</body>
+</html>
